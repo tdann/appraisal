@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}
+    SECTION D: ACTION PLAN TO IMPROVE PERFORMANCE
+{% endblock page_title %}
+
+{% block content %}
+<!-- Collapsable Card Example -->
+<div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
+        role="button" aria-expanded="true" aria-controls="collapseCardExample">
+        <h4 class="m-0 font-weight-bold text-primary">Guide</h4>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseCardExample">
+        <div class="card-body">
+           The Action Plan shall be jointly agreed during the performance appraisal meeting, taking into account the
+           Appraisee’s required job competencies, and the identified performance gaps.  Such action plan for improved
+           performance may include: Training, coaching, mentoring, job rotation, counseling among others.
+           <b>Where the plan(s) involve formal training of the Appraisee, such record should be forwarded to
+           the Human Resource Directorate.
+
+           <strong>Click on the header</strong> to collapse (after understanding how to fill the table below)
+           or expand the Body (to get more clarification)
+        </div>            
+</div>
+
+<div class="card-header py-3">
+    <h4 class="m-0 font-weight-bold text-primary">Action Plan</h4>
+</div>
+<form class="form-horizontal" method="POST">
+    {% csrf_token %}
+    <div class="card-body">
+        {% for a in form.visible_fields %}
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">{{a.label_tag}}</div>
+            <div class="col-sm-10">
+                {{ a|add_class:"form-control" }}
+                <br> {{ a.help_text }}
+            </div>
+            {% if a.errors %}
+            {% for error in a.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+            {% endfor %}        
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-info">Add Performance Gap</button>
+        
+    </div>
+    {% comment %} {{ form }} {% endcomment %}
+</form>
+<button type="submit" class="btn btn-info">Next Page or Section</button>
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Performance Gap</th>
+                    <th>Agreed Action</th>
+                    <th>Time Frame</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for performance in performances reversed %}
+            
+                <tr>
+                    <td>{{performance.performance_gap}}</td>
+                    <td>{{performance.agreed_action}}</td>
+                    <td>{{performance.time_frame}}</td>
+                </tr>
+
+            {% endfor %}
+            
+            </tbody>
+</table>
+{% endblock content %}

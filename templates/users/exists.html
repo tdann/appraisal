@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class='card bg-info'>
+
+    <h1 class='card-title'>Oops!! Sorry {{user.username}} we cannot do that.</h1>
+    <div class='card-body'>
+        <div class='alert alert-danger'>
+            We only allow applying for a new proposal in a month time frame. You will have to wait for the next month to re-apply.
+        </div>
+    </div>
+    </div>
+{% endblock content %}

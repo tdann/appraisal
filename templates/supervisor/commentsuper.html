@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}
+    SECTION E: COMMENTS, RECOMMENDATIONS (IF ANY) AND SIGNATURES <br>
+    (RECOMMENDATION BY THE APPRAISER )
+{% endblock page_title %}
+
+{% block content %}
+
+<!-- Collapsable Card Example -->
+<div class="card shadow mb-4">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
+        role="button" aria-expanded="true" aria-controls="collapseCardExample">
+        <h4 class="m-0 font-weight-bold text-primary">The following are Recommendations Depending on the Appraisee's Needs</h4>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseCardExample">
+        <div class="card-body">
+           <ol>
+            <li>To promote to higher post</li>
+            <li>To confirm in service</li>
+            <li>To write a letter of appreciation</li>
+            <li>To write a letter of encouragement</li>
+            <li>To write a letter of warning</li>
+            <li>To demote in rank</li>
+            <li>To terminate services</li>
+            <li>No action needed</li>
+            <li>Others (specify)</li>
+           <ol> <br>
+            
+            <strong>Click on the header</strong> to collapse (after understanding how to fill the table below)
+            or expand the Body (to get more clarification)
+        </div>            
+</div>
+<div class="card-header py-3">
+          <h4 class="m-0 font-weight-bold text-primary">Comment with recommendation</h4>
+</div>
+<form class="form-horizontal" method="POST">
+    {% csrf_token %}
+    <div class="card-body">
+        {% for a in form.visible_fields %}
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">{{a.label_tag}}</div>
+            <div class="col-sm-10">
+                {{ a|add_class:"form-control" }}
+                <br> {{ a.help_text }}
+            </div>
+            {% if a.errors %}
+            {% for error in a.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+            {% endfor %}        
+    </div>
+    <div class="card-footer">
+    <button type="submit" class="btn btn-info">Submit Your Comments</button>
+    </div>
+    {% comment %} {{ form }} {% endcomment %}
+</form>
+{% endblock content %}

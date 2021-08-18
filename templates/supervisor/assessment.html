@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}
+    SECTION B:  ASSESSMENT OF THE LEVEL OF ACHIEVEMENT (LAST TO BE ATTEMPTED) {{ view.kwargs.pk }}
+{% endblock page_title %}
+
+{% block content %}
+<!-- Collapsable Card Example -->
+<div class="card shadow mb-4">
+
+    <!-- Card Header - Accordion -->
+    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
+        role="button" aria-expanded="true" aria-controls="collapseCardExample">
+        <h4 class="m-0 font-weight-bold text-primary">Guide</h4>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseCardExample">
+   
+        <div class="card-body">
+ 
+           This section should be filled by both the Appraiser and the Appraisee. At the beginning of each assessment
+           period, the Appraiser and Appraisee will agree on the key outputs for the assessment period. The means by
+           which performance shall be measured (Performance Indicators) and the minimum level of performance
+           (Performance targets) for each output shall be agreed upon.  If in the course of the assessment period,
+           other activities are assigned to the Appraisee, the outputs related to the activities should be agreed
+           upon and included immediately or at least before the end of the assessment period.  It is recommended that
+           the maximum of outputs for each assessment period should not exceed 10.
+           <br>At the end of the assessment period, an appraisal meeting should be conducted by the Appraiser.The Appraisee
+           completes part B (1); before the appraisal meeting, by indicating the key outputs, performance indicators
+           and targets agreed upon in the performance plan at the beginning of the assessment period.  The Appraiser
+           should complete part B (2), after the appraisal meeting.  The assessment should reflect the jointly agreed position.
+           <br>The assessment of the Individual outputs shall be reflected as a performance level under section B (20);
+           this will be supported by relevant comments on performance under the same section.  The performance levels shall
+           be described as Excellent, Very good, Good, Fair and Poor.  In order to quantify the assessment, the performance 
+           levels shall be awarded scores namely; 5 for excellent, 4 for Very Good, 3 for Good, 2 for Fair and 1 for Poor.
+           Right after the table is a detailed description of the performance levels.
+           <br>
+           <strong>Click on the header</strong> to collapse (after understanding how to fill the table below)
+           or expand the Body (to get more clarification)
+        </div>            
+</div>
+
+<div class="card-header py-3">
+    <h4 class="m-0 font-weight-bold text-primary">Appraiser and Appraisee Communicate and Agree</h4>
+</div>
+<form class="form-horizontal" action='{% url "staff:as" competence.pk %}' method="POST">
+    {% csrf_token %}
+    <div class="card-body"> 
+        {% for a in form.visible_fields %}
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">{{a.label_tag}}</div>
+            <div class="col-sm-10">
+                {{ a|add_class:"form-control" }}
+                <br> {{ a.help_text }}
+            </div>
+            {% if a.errors %}
+            {% for error in a.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+            {% endfor %}        
+    </div>
+    <div class="card-footer">
+        <button {% if assess < 10 %}type="submit" class="btn btn-info" {% else %} class="btn btn-inactive" inactive {% endif %}>Add Outputs</button>
+
+        <a  {% if assess > 5 %}class="btn btn-info float-right" href='{% url 'staff:comm' competence.pk %}' {% else %} class="btn btn-inactive float-right" inactive {% endif %}>Proceed</a>
+    </div>
+                {% comment %} <a  {% if assess > 5 %}class="btn btn-info float-right" href= 'staff:update_assessment'>Continue to Update the Outputs</a> {% endcomment %}
+
+    {% comment %} {{ form }} {% endcomment %}
+</form>
+{% endblock content %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}
+    SECTION B:  ASSESSMENT OF THE LEVEL OF ACHIEVEMENT 
+{% endblock page_title %}
+
+{% block content %}
+<!-- Collapsable Card Example -->
+{% comment %} <div class="card shadow mb-4"> {% endcomment %}
+
+<div class="card-header py-3">
+    <h4 class="m-0 font-weight-bold text-primary">Edit the key outputs </h4>
+</div>
+
+{% for object in objects %}
+<form class="form-horizontal" action="{% url 'staff:update_assess' object.pk %}" method="POST">
+    {% csrf_token %}
+    <div class="card-body"> 
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">{{form.key_outputs.label_tag}}</div>
+            <div class="col-sm-10">
+                {% comment %} {{ a|add_class:"form-control" }} {% endcomment %}
+                {% render_field form.key_outputs value=object.key_outputs class='form-control' %}
+                <br>
+            </div>
+            {% if form.key_outputs.errors %}
+            {% for error in form.key_outputs.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">{{form.performance_indicator.label_tag}}</div>
+            <div class="col-sm-10">
+                {% comment %} {{ a|add_class:"form-control" }} {% endcomment %}
+                {% render_field form.performance_indicator value=object.performance_indicator class='form-control' %}
+                <br>
+            </div>
+            {% if form.performance_indicator.errors %}
+            {% for error in form.performance_indicator.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">{{form.performance_target.label_tag}}</div>
+            <div class="col-sm-10">
+                {% comment %} {{ a|add_class:"form-control" }} {% endcomment %}
+                {% render_field form.performance_target value=object.performance_target class='form-control' %}
+                <br>
+            </div>
+            {% if form.performance_target.errors %}
+            {% for error in form.performance_target.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2 col-form-label">{{form.self_rating.label_tag}}</div>
+            <div class="col-sm-10">
+                {% comment %} {{ a|add_class:"form-control" }} {% endcomment %}
+                {% render_field form.self_rating value=object.self_rating class='form-control' %}
+                <br>
+            </div>
+            {% if form.self_rating.errors %}
+            {% for error in form.self_rating.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-info">Update {{object.key_outputs}}</button>
+
+    </div>
+    {% comment %} {{ form }} {% endcomment %}
+</form>
+{% endfor %}
+
+{% endblock content %}

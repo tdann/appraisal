@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+<div class='text-center text-success font-weight-bold h1 '>
+    *********************************************************
+</div>
+{% endblock page_title %}
+
+{% block content %}
+
+    <div class='text-center text-success font-weight-bold h1 '>Congraturations!!!</div>
+    <div class='text-center text-success font-weight-bold'>
+        Dear {{user.first_name}}, 
+        Your appraisal has been successfully placed! <br>
+    
+        The only available option to appraise now is to edit the submitted Appraisal Until before
+        the supervisor can review and sign it.<br>
+        Else wait for another Appraising period.
+        Otherwise thank you for Your time to Fill this Form<br>
+        The management wishes You well for Your requirement!
+    </div>
+
+
+{% endblock content %}

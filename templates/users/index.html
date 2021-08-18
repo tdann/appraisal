@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Home
+{% endblock page_title %}
+
+{% block content %}
+{% comment %} user --> to every table that has a relationship to the User model ===user.competence {% endcomment %}
+<div class="alert alert-danger">
+    <b>
+        Dear {{user.first_name}},</b> <br>Welcome To your Electronically Automated Performance
+        Appraisal Account, You are now ready to Appraise as A {{user.profile.job_title}}.
+    <br>
+    <b>Preamble</b>
+    <br>
+        This performance management tool is for establishing the extent to which set targets within the overall goals 
+        of the university are achieved.  Performance gaps are discovered and development needs of an individual 
+        employee are identified as the appraisal process offers an opportunity to the Appraisee and Appraiser 
+        to dialogue and obtain feedback on performance.  The process should therefore be participatory in 
+        nature, and consistent in the use of guidelines by all Public Officers in filling the form.
+    <br><br>
+        The Appraiser and Appraisee are therefore, advised to read the detailed guidelines before filling this form.
+
+    <br>
+        This is always done at a specific period of Time, always take time to inquire about when it is done.
+</div>
+<div class="alert alert-danger">
+    <b>It is advisable to always fill this form. it is more important most especially during promotion of
+    workers. Please make sure that you have not missed any chance of filling this form. Please read the
+     information above and understand it well before you fill the form. Thanks for being responsible.</b>
+</div>
+
+
+{% endblock content %}

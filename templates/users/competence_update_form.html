@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}
+    SECTION C: ASSESSMENT OF CORE COMPETENCIES
+{% endblock page_title %}
+
+{% block content %}
+
+    <div class="card shadow mb-4o">
+        <div class="card-header py-3">
+          <h4 class="m-0 font-weight-bold text-primary">Update Your Competence before the Supervisor Signs It </h4>
+        </div>
+        
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %} 
+            <div class="card-body">
+                {% for f in form.visible_fields %}
+                    <div class="form-group row">
+                    <div class="col-sm-2 col-form-label">{{ f.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ f|add_class:"form-control" }}
+                <br> {{ f.help_text }}
+            </div>
+            {% if f.errors %}
+            {% for error in f.errors %}
+            <span class="text-danger">{{error}}</span>
+            {% endfor %}
+            {% endif %}
+            </div>
+            {% endfor %}
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="submit" class="btn btn-info" >Update your competence</button>
+                <a class="btn btn-info float-center" href= "{% url 'staff:update_assessment' view.kwargs.pk %}">Continue to Update the Outputs</a>
+                <a class="btn btn-info float-right" href= "{% url 'staff:update_com' object.appraiseecomment.pk %}">Continue to Update Your Comments</a>
+            </div>
+            <!-- /.card-footer -->
+        </form>
+    </div>
+
+{% endblock content %}

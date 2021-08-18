@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "install",
+			"path": "staffappraisal/static/vendor/fontawesome-free/",
+			"problemMatcher": [],
+			"label": "npm: install - staffappraisal/static/vendor/fontawesome-free",
+			"detail": "install dependencies from package"
+		}
+	]
+}
