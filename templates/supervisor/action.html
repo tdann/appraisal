@@ -50,30 +50,30 @@
     </div>
     <div class="card-footer">
         <button type="submit" class="btn btn-info">Add Performance Gap</button>
-        
     </div>
     {% comment %} {{ form }} {% endcomment %}
 </form>
-<button type="submit" class="btn btn-info">Next Page or Section</button>
+<p class="alert alert-success">Please check below to see the performance already added</p>
 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Performance Gap</th>
-                    <th>Agreed Action</th>
-                    <th>Time Frame</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for performance in performances reversed %}
-            
-                <tr>
-                    <td>{{performance.performance_gap}}</td>
-                    <td>{{performance.agreed_action}}</td>
-                    <td>{{performance.time_frame}}</td>
-                </tr>
+    <thead>
+        <tr>
+            <th>Performance Gap</th>
+            <th>Agreed Action</th>
+            <th>Time Frame</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for performance in performances reversed %}
+    
+        <tr>
+            <td>{{performance.performance_gap}}</td>
+            <td>{{performance.agreed_action}}</td>
+            <td>{{performance.time_frame}}</td>
+        </tr>
 
-            {% endfor %}
-            
-            </tbody>
+    {% endfor %}
+    
+    </tbody>
 </table>
+<button type="submit" class="btn btn-info">Next Page or Section</button>
 {% endblock content %}

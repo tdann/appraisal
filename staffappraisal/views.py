@@ -216,7 +216,7 @@ class ProfileView(CreateView):
 class PerformanceView(CreateView):
     model = Performance
     form_class = PerformanceForm
-    template_name = 'users/action.html'
+    template_name = 'supervisor/action.html'
     def get_success_url(self):
         # pk = self.kwargs['pk']
         return reverse("staff:act", kwargs = {'pk':self.kwargs['pk']}) 
