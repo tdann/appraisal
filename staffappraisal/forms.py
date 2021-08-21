@@ -1,3 +1,4 @@
+from django.db.models import fields
 from staffappraisal import models
 from staffappraisal.models import AppraiseeComment, AppraiserAndAppraiseeAgreement, Competence, AppraiserComment, Performance, Profile,VcComment
 from django import forms
@@ -63,3 +64,9 @@ class AssessmentForm(forms.ModelForm):
     class Meta:
         model = AppraiserAndAppraiseeAgreement
         exclude = ['competence', 'supervisor_rating', 'super_visor', 'comments_on_performance']
+
+class AssessmentFormSuper(forms.ModelForm):
+    class Meta:
+        model = AppraiserAndAppraiseeAgreement
+        exclude = ['competence']
+        

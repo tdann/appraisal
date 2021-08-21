@@ -75,5 +75,6 @@
     
     </tbody>
 </table>
-<button type="submit" class="btn btn-info">Next Page or Section</button>
+<a class="btn btn-info float-right" href= "{% url 'staff:agreement' view.kwargs.pk %}">Go to Edit the Outputs</a>
+
 {% endblock content %}

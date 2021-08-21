@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}
+    ASSESSMENT OF THE LEVEL OF ACHIEVEMENT
+{% endblock page_title %}
+{% block content %}
+
+    <p class="alert alert-success">These are already added Key Outputs, performance Indicators and Targets</p>
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Key Outputs</th>
+            <th>Performance Indicator</th>
+            <th>Performance targets</th>
+            <th>Self Rating</th>
+            <th>Supervisors Rating</th>
+            <th>Comments on Performance</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for agreement in agreements reversed %}
+        <form action="" method="POST">
+        {% csrf_token %}
+            <tr>
+                <td>{{agreement.key_outputs}}</td>
+                <td>{{agreement.performance_indicator}}</td>
+                <td>{{agreement.performance_target}}</td>
+                <td>{{agreement.self_rating}}</td>
+                <td contenteditable='true'>{{agreement.supervisor_rating}}</td>
+                <td contenteditable='true'>{{agreement.comments_on_performance}}</td>
+                <td><a class="btn btn-info float-center" href= "{% url 'staff:editi' agreement.pk %}">Update</a></td>
+                {% comment %} <td><button type="submit" class="btn btn-info">Update</button></td> {% endcomment %}
+            </tr>
+        </form>
+
+    {% endfor %}
+    
+    </tbody>
+</table>
+<button type="submit" class="btn btn-info">Go to Your final Comment on this Performance Appraisal</button>
+
+{% endblock content %}

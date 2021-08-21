@@ -1,14 +1,15 @@
 # from staffappraisal.models import AppraiseeComment
 from django.urls.base import reverse
-from django.views.generic.edit import UpdateView
 from staffappraisal.models import AppraiseeComment, AppraiserAndAppraiseeAgreement, AppraiserComment, Competence, Performance, Profile, VcComment
-from staffappraisal.forms import AssessmentForm, CommentForm, CommentvcForm, CompetenceForm, CommentForm,AppraiserForm, PerformanceForm, ProfileForm
+from staffappraisal.forms import AssessmentForm, AssessmentFormSuper, CommentForm, CommentvcForm, CompetenceForm, CommentForm,AppraiserForm, PerformanceForm, ProfileForm
 from django.db import reset_queries
 from django.forms.forms import Form
 from django.http import request
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.base import TemplateView
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.db.models.functions import Extract
+
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, auth
@@ -36,18 +37,14 @@ def LogoutView(request):
     auth.logout(request)
     return redirect("staff:login")
 
-
 class RegisterView(TemplateView):
     template_name = "auth/register.html"
-
 
 class ViewUsers(TemplateView):
     template_name = "users/users.html"
 
 class ViewList(TemplateView):
     template_name = "supervisor/appraiselist.html"
-
-
 
 class Profiles(TemplateView):
     template_name= "alluser/profile.html"
@@ -63,7 +60,6 @@ class SuperandApprai(TemplateView):
 class IndexView(TemplateView):
     template_name = "users/index.html"
 
-
 def LoginSystem(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -73,7 +69,6 @@ def LoginSystem(request):
         return redirect("staff:index")
     else:
         return render(request, "auth/login.html")
-
 
 def Register(request):
     if request.method == 'POST':
@@ -103,40 +98,16 @@ class CompetenceUpdateView(UpdateView):
     template_name = "users/competence_update_form.html"
     success_url='/'
 
-# def AppraiseeCommentUpdateView(request, pk):
-#     obj = AppraiseeComment.objects.filter(competence__id =pk)
-#     # model = AppraiseeComment
-#     form=CommentForm()
-#     return render(request, "users/comment_update_form.html", {'objects':obj, 'form':form})
-
-# def UpdateAppraiseeComment(request, pk):
-#     if request.method == 'POST':
-#         app =AppraiseeComment.objects.get(pk=pk)
-#         form = CommentForm(request.POST, instance=app)
-#         if form.is_valid():
-#             form.save()
-#         return redirect('/')
-
 class AppraiseeCommentUpdate(UpdateView):
     model = AppraiseeComment
     form_class=CommentForm
     template_name = "users/comment_update_form.html"
     success_url='/'
 
-
-# class AppraiserAndAppraiseeAgreementView(UpdateView):
-#     model = AppraiserAndAppraiseeAgreement
-#     form_class=AssessmentForm
-#     template_name = "users/assessment_update_form.html"
-
-#     success_url='/'
-
-
 def AppraiserAndAppraiseeAgreementView(request, pk):
     my_objects = AppraiserAndAppraiseeAgreement.objects.filter(competence__id =pk)
     form = AssessmentForm()
     return render(request, "users/assessment_update_form.html",  {'objects':my_objects, 'form':form})
-
 
 def UpdateAppraiserAndAppraiseeAgreement(request, pk):
     my_objects = AppraiserAndAppraiseeAgreement.objects.get(pk =pk)
@@ -147,13 +118,7 @@ def UpdateAppraiserAndAppraiseeAgreement(request, pk):
             fm = form.save()
     return redirect('/update_assessment/'+str(my_objects.competence.pk))
 
-# class ActionUpdate(UpdateView):
-#     model = Performance
-#     form_class=PerformanceForm
-#     template_name = "users/action.html"
-#     success_url='/'
 
-from django.db.models.functions import Extract
 def CompentenceCreateView(request):
     form = CompetenceForm()
     dat = datetime.datetime.now()
@@ -247,14 +212,6 @@ def AssessmentView(request, pk):
             return redirect('/as/'+str(competence.pk)) #localhost/as/7
     return render(request, 'supervisor/assessment.html', {'form':form, 'competence':competence, 'assess':asses})
 
-# AssessmentView(request)
-# class AssessmentView(CreateView):
-#     model = AppraiserAndAppraiseeAgreement
-#     form_class = AssessmentForm
-#     template_name = 'supervisor/assessment.html'
-#     def form_valid(self, form):
-#         form.instance.user=self.request.user
-#         return super().form_valid(form)
 
 class ListCompetenceView(ListView):
     model = Competence
@@ -263,7 +220,7 @@ class ListCompetenceView(ListView):
     
     def get_queryset(self):
         """
-            Return only the compentences where the currently logged in user is the head
+            Return only the competences where the currently logged in user is the head
         """
         queryset = Competence.objects.filter(user__profile__department__faculty__faculty_head=self.request.user)
         return queryset
@@ -285,4 +242,44 @@ class AllDetailViewapp(DetailView):
     context_object_name="details"
     template_name = "supervisor/detail.html"
 
-    
+class AgreementView(CreateView):
+    model = AppraiserAndAppraiseeAgreement
+    form_class = AssessmentFormSuper
+    template_name = 'supervisor/last.html'
+    def get_success_url(self):
+        # pk = self.kwargs['pk']
+        return reverse("staff:agreement", kwargs = {'pk':self.kwargs['pk']}) 
+
+    def form_valid(self, form):
+        assess =get_object_or_404(AppraiserAndAppraiseeAgreement, pk = self.kwargs.get('pk'))
+        form.instance.appraiserandappraiseeagreement=assess
+        # form.instance.user=self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['agreements'] = AppraiserAndAppraiseeAgreement.objects.filter(competence__id=self.kwargs.get('pk'))
+        return context
+def EditOutput(request,pk):
+    disp = AppraiserAndAppraiseeAgreement.objects.get(pk=pk)
+    return render(request,"supervisor/editlast.html",{"outputing":disp})
+
+# class UpdateOutputall(UpdateView):
+#     # upd = AppraiserAndAppraiseeAgreement.objects.get(pk =pk)
+#     model = AppraiserAndAppraiseeAgreement
+#     form = AssessmentFormSuper(request.POST, instance=upd)
+#     if form.is_valid():
+#         form.save()
+            # return render(request,"supervisor/editlast.html",{"outputing":upd})
+    # upd = AppraiserAndAppraiseeAgreement.objects.get(pk =pk)
+
+
+class UpdateOutputall(UpdateView):
+    model = AppraiserAndAppraiseeAgreement
+    form_class = AssessmentFormSuper
+    template_name = "supervisor/editlast.html"
+
+    def get_success_url(self):
+        return reverse("staff:agreement", kwargs = {'pk':self.competence.pk})

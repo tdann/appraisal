@@ -27,6 +27,9 @@ urlpatterns = [
     path('logout', views.LogoutView, name='logout'),
     path('add_user', views.Register, name='add_user'),
     path('detail/<pk>', views.AllDetailViewapp.as_view(), name='detail'),
-
+    path('agreement/<pk>', views.AgreementView.as_view(), name='agreement'),
+    path('edit/<pk>', views.EditOutput, name='editing'),
+    path('editi/<pk>', views.UpdateOutputall.as_view(), name='editi'),
+    
 
 ]
