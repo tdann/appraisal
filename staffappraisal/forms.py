@@ -66,7 +66,14 @@ class AssessmentForm(forms.ModelForm):
         exclude = ['competence', 'supervisor_rating', 'super_visor', 'comments_on_performance']
 
 class AssessmentFormSuper(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+       super(AssessmentFormSuper, self).__init__(*args, **kwargs)
+       self.fields['key_outputs'].widget.attrs['readonly'] = True
+       self.fields['performance_indicator'].widget.attrs['readonly'] = True
+       self.fields['performance_target'].widget.attrs['readonly'] = True
+       self.fields['self_rating'].widget.attrs['readonly'] = True
     class Meta:
         model = AppraiserAndAppraiseeAgreement
-        exclude = ['competence']
+        exclude = ['competence','super_visor']
+
         
