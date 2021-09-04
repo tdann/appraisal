@@ -85,7 +85,7 @@
                         {% if user.profile.roles == 's' %}
                             <a class='collapse-item' href="{% url 'staff:list'  %}" />Appraisee List</a>
                             {% comment %} <a class='collapse-item' href="{% url 'staff:act'  %}" />Action Plan</a> {% endcomment %}
-                            <a class='collapse-item' href="{% url 'staff:coma'  %}" />Supervisor's Comments</a>
+                            {% comment %} <a class='collapse-item' href="{% url 'staff:coma'  %}" />Supervisor's Comments</a> {% endcomment %}
                             {% comment %} <a class='collapse-item' href="{% url 'staff:as'  %}" />Assessment</a> {% endcomment %}
                         {% endif %}
 

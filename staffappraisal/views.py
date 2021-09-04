@@ -1,5 +1,5 @@
 # from staffappraisal.models import AppraiseeComment
-from django.urls.base import reverse
+from django.urls.base import reverse, reverse_lazy
 from staffappraisal.models import AppraiseeComment, AppraiserAndAppraiseeAgreement, AppraiserComment, Competence, Performance, Profile, VcComment
 from staffappraisal.forms import AssessmentForm, AssessmentFormSuper, CommentForm, CommentvcForm, CompetenceForm, CommentForm,AppraiserForm, PerformanceForm, ProfileForm
 from django.db import reset_queries
@@ -158,9 +158,14 @@ class CommentappView(CreateView):
     model = AppraiserComment
     form_class = AppraiserForm
     template_name = 'supervisor/commentsuper.html'
+    
     def form_valid(self, form):
         form.instance.user=self.request.user
         return super().form_valid(form)
+        
+    def get_success_url(self):
+        appee = self.object.appraisee_comment.pk
+        return reverse_lazy("staff:coma", kwargs = {'pk':appee})
 
 class CommentvcView(CreateView):
     model = VcComment
@@ -247,13 +252,12 @@ class AgreementView(CreateView):
     form_class = AssessmentFormSuper
     template_name = 'supervisor/last.html'
     def get_success_url(self):
-        # pk = self.kwargs['pk']
         return reverse("staff:agreement", kwargs = {'pk':self.kwargs['pk']}) 
 
     def form_valid(self, form):
         assess =get_object_or_404(AppraiserAndAppraiseeAgreement, pk = self.kwargs.get('pk'))
         form.instance.appraiserandappraiseeagreement=assess
-        # form.instance.user=self.request.user
+        # form.instance.super_visor=self.request.user
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -265,21 +269,15 @@ class AgreementView(CreateView):
 def EditOutput(request,pk):
     disp = AppraiserAndAppraiseeAgreement.objects.get(pk=pk)
     return render(request,"supervisor/editlast.html",{"outputing":disp})
-
-# class UpdateOutputall(UpdateView):
-#     # upd = AppraiserAndAppraiseeAgreement.objects.get(pk =pk)
-#     model = AppraiserAndAppraiseeAgreement
-#     form = AssessmentFormSuper(request.POST, instance=upd)
-#     if form.is_valid():
-#         form.save()
-            # return render(request,"supervisor/editlast.html",{"outputing":upd})
-    # upd = AppraiserAndAppraiseeAgreement.objects.get(pk =pk)
-
-
 class UpdateOutputall(UpdateView):
     model = AppraiserAndAppraiseeAgreement
     form_class = AssessmentFormSuper
     template_name = "supervisor/editlast.html"
 
+    def form_valid(self, form):
+        form.instance.super_visor = self.request.user
+        return super().form_valid(form)
+
     def get_success_url(self):
-        return reverse("staff:agreement", kwargs = {'pk':self.competence.pk})
+        comp_id = self.object.competence.pk
+        return reverse_lazy("staff:agreement", kwargs = {'pk':comp_id})
