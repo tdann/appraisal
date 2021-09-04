@@ -31,7 +31,6 @@
                 <td contenteditable='true'>{{agreement.supervisor_rating}}</td>
                 <td contenteditable='true'>{{agreement.comments_on_performance}}</td>
                 <td><a class="btn btn-info float-center" href= "{% url 'staff:editi' agreement.pk %}">Update</a></td>
-                {% comment %} <td><button type="submit" class="btn btn-info">Update</button></td> {% endcomment %}
             </tr>
         </form>
 
@@ -39,6 +38,6 @@
     
     </tbody>
 </table>
-{% comment %} <a class="btn btn-info" href= "{% url 'staff:coma' editi.pk %}">Go to Your final Comment on this Performance Appraisal</a> {% endcomment %}
+<a class="btn btn-info" href= "{% url 'staff:coma' view.kwargs.pk %}">Go to Your final Comment on this Performance Appraisal</a>
 
 {% endblock content %}

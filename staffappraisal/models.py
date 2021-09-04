@@ -249,7 +249,7 @@ class AppraiseeComment(models.Model):
         return self.competence.user.get_full_name()
 
 class AppraiserComment(models.Model):
-    appraisee_comment = models.ForeignKey(AppraiseeComment, on_delete=models.CASCADE)
+    appraisee_comment = models.OneToOneField(AppraiseeComment, on_delete=models.CASCADE)
     comment_justification = models.TextField(max_length=500, verbose_name="COMMENTS OF THE APPRAISER & JUSTIFICATION FOR THE COMMENTS")
     current_date = models.DateTimeField(auto_now=True)
     super_visor = models.ForeignKey(User, on_delete=models.CASCADE)

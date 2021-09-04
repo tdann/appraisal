@@ -7,6 +7,7 @@ from .models import (
     Competence,
     OverallPerformance,
     Performance,
+    AppraiserComment,
     VcComment,
     Department
 )
@@ -25,3 +26,4 @@ admin.site.register(Performance)
 admin.site.register(Competence)
 admin.site.register(VcComment)
 admin.site.register(Department)
+admin.site.register(AppraiserComment)

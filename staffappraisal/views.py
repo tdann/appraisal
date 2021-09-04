@@ -1,4 +1,5 @@
 # from staffappraisal.models import AppraiseeComment
+from django.http.response import HttpResponse
 from django.urls.base import reverse, reverse_lazy
 from staffappraisal.models import AppraiseeComment, AppraiserAndAppraiseeAgreement, AppraiserComment, Competence, Performance, Profile, VcComment
 from staffappraisal.forms import AssessmentForm, AssessmentFormSuper, CommentForm, CommentvcForm, CompetenceForm, CommentForm,AppraiserForm, PerformanceForm, ProfileForm
@@ -9,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.base import TemplateView
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.db.models.functions import Extract
+from django.db import IntegrityError
 
 
 from django.contrib.auth import authenticate, login, logout
@@ -158,14 +160,29 @@ class CommentappView(CreateView):
     model = AppraiserComment
     form_class = AppraiserForm
     template_name = 'supervisor/commentsuper.html'
+    success_url='/success'
     
     def form_valid(self, form):
-        form.instance.user=self.request.user
-        return super().form_valid(form)
+        comm1 = AppraiseeComment.objects.get(competence__id = self.kwargs['pk'])
+        form.instance.appraisee_comment=comm1
+       
+        try:
+             form.instance.super_visor=self.request.user
+             return super().form_valid(form)
+    # code that produces error
+        except IntegrityError as e:
+            # return render("auth/register.html", {"message": e.message})
+            return HttpResponse("ERROR: Comment already exists!")
+            
+
+    # def get_queryset(self):
+    #     queryset =super().get_queryset()
+    #     queryset = AppraiseeComment.objects.get(competence__pk=self.kwargs['pk'])
+    #     return queryset
         
-    def get_success_url(self):
-        appee = self.object.appraisee_comment.pk
-        return reverse_lazy("staff:coma", kwargs = {'pk':appee})
+    # def get_success_url(self):
+    #     appee = self.object.appraisee_comment.pk
+    #     return reverse_lazy("staff:coma", kwargs = {'pk':appee})
 
 class CommentvcView(CreateView):
     model = VcComment
