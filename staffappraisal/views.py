@@ -244,7 +244,7 @@ class ListCompetenceView(ListView):
         """
             Return only the competences where the currently logged in user is the head
         """
-        queryset = Competence.objects.filter(user__profile__department__faculty__faculty_head=self.request.user)
+        queryset = Competence.objects.filter(user__profile__department__faculty__faculty_head=self.request.user,appraiseecomment__appraisercomment__comment_justification__isnull=True)
         return queryset
 
 """
