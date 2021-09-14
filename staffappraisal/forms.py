@@ -23,7 +23,7 @@ class CompetenceForm(forms.ModelForm):
             'comment_integrity':forms.Textarea(attrs={'cols': 10, 'rows': 3}),
             'comment_time_management':forms.Textarea(attrs={'cols': 10, 'rows': 3}),
             'comment_loyalty':forms.Textarea(attrs={'cols': 10, 'rows': 3}),
-            'other_competence':forms.Textarea(attrs={'cols': 10, 'rows': 3}),
+            # 'other_competence':forms.Textarea(attrs={'cols': 10, 'rows': 3}),
             'comment_other_competence':forms.Textarea(attrs={'cols': 10, 'rows': 3}),
         }
 

@@ -17,7 +17,7 @@ urlpatterns = [
     path('update_assess/<pk>', views.UpdateAppraiserAndAppraiseeAgreement, name='update_assess'),
     path('success', views.SuccessView.as_view(), name='success'),
     path('coma/<pk>', views.CommentappView.as_view(), name='coma'),
-    path('comv', views.CommentvcView.as_view(), name='comv'),
+    path('comv/<pk>', views.CommentvcView.as_view(), name='comv'),
     path('prof', views.ProfileView.as_view(), name='prof'),
     path('act/<pk>', views.PerformanceView.as_view(), name='act'),
     path('as/<pk>', views.AssessmentView, name='as'),
@@ -30,6 +30,10 @@ urlpatterns = [
     path('agreement/<pk>', views.AgreementView.as_view(), name='agreement'),
     path('edit/<pk>', views.EditOutput, name='editing'),
     path('editi/<pk>', views.UpdateOutputall.as_view(), name='editi'),
+    path('listvc', views.ListCompetenceVCView.as_view(), name='listvc'),
+    path('details/<pk>', views.AllDetailViewVC.as_view(), name='details'),
+     #localhost:8000/list
+
     
 
 ]

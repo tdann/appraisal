@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}
+    Details About the Appraisal
+{% endblock page_title %}
+{% block content %}
+<div class="card-body">
+<fieldset>
+    <legend>PERSONAL INFORMATION</legend>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td>Name of Appraisee:</td>
+                    <td>{{details.user.get_full_name}}</td>
+                    <td>Date of birth:</td>
+                    <td>{{details.user.profile.staff_dob}}</td>
+                    <td>Current Job Title:</td>
+                    <td>{{details.user.profile.job_title}}</td>
+                </tr>
+                <tr>
+                    <td>Salary Scale:</td>
+                    <td>{{details.user.profile.get_salary_scale_display}}</td>
+                    <td>Date of 1st Appointment:</td>
+                    <td>{{details.user.profile.f_appoi_date}}</td>
+                    <td>Date of Latest Appointment:</td>
+                    <td>{{details.user.profile.s_appoi_date}}</td>
+                </tr>
+                <tr>
+                    <td>Terms of Appointment:</td>
+                    <td>{{details.user.profile.get_terms_of_appoint_display}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>  
+                <tr>
+                    <td>Name of the Appraiser:</td>
+                    {% comment %} <td>{{user.get_full_name}}</td> {% endcomment %}
+                    <td>{{details.user.profile.department.faculty.faculty_head.get_full_name}}</td>
+                    <td>Job Title:</td>
+                    <td>{{details.user.profile.department.faculty.faculty_head.get_job_title}}</td>
+                    <td>Salary Scale:</td>
+                    <td>{{user.profile.get_salary_scale_display}}</td>
+                </tr>  
+                <tr>
+                    <td>Faculty/Institute/Unit:</td>
+                    <td>{{details.user.profile.department.faculty.faculty_name}}</td>
+                    <td>Department:</td>
+                    <td>{{details.user.profile.department.department_name}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>                          
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>COMPETENCE</legend>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Competence</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Professional Knowledge/ Skills</td>
+                    <td>{{details.profession_skill}}</td>
+                    <td>{{details.comment_professional_skill}}</td>
+                </tr>
+                <tr>
+                    <td>Planning, organizing and coordinating</td>
+                    <td>{{details.planning}}</td>
+                    <td>{{details.comment_planning}}</td>
+                </tr>
+                <tr>
+                    <td>Leadership</td>
+                    <td>{{details.leadership}}</td>
+                    <td>{{details.comment_leadership}}</td>
+                </tr>
+                <tr>
+                    <td>Decision making</td>
+                    <td>{{details.decision_making}}</td>
+                    <td>{{details.comment_decision_making}}</td>
+                </tr>
+                <tr>
+                    <td>Initiative & Innovation</td>
+                    <td>{{details.innovation}}</td>
+                    <td>{{details.comment_innovation}}</td>
+                </tr>
+                <tr>
+                    <td>Team work</td>
+                    <td>{{details.team_work}}</td>
+                    <td>{{details.comment_team_work}}</td>
+                </tr>
+                <tr>
+                    <td>Human Resource Management/ Mentorship</td>
+                    <td>{{details.human_resource}}</td>
+                    <td>{{details.comment_human_resource}}</td>
+                </tr>
+                <tr>
+                    <td>Financial management</td>
+                    <td>{{competence.fin_management}}</td>
+                    <td>{{competence.comment_financial_management}}</td>
+                </tr>
+                <tr>
+                    <td>Management of other resources (equipment & facilities)</td>
+                    <td>{{details.o_resource_man}}</td>
+                    <td>{{details.comment_other_resource_mananagement}}</td>
+                </tr>
+                <tr>
+                    <td>Result Orientation</td>
+                    <td>{{details.result_orientation}}</td>
+                    <td>{{details.comment_result_orientation}}</td>
+                </tr>
+                <tr>
+                    <td>Client care</td>
+                    <td>{{details.client_care}}</td>
+                    <td>{{details.comment_client_care}}</td>
+                </tr>
+                <tr>
+                    <td>Communication skills</td>
+                    <td>{{details.communication}}</td>
+                    <td>{{details.comment_communication}}</td>
+                </tr>
+                <tr>
+                    <td>Integrity</td>
+                    <td>{{details.integrity}}</td>
+                    <td>{{details.comment_integrity}}</td>
+                </tr>
+                <tr>
+                    <td>Time Management</td>
+                    <td>{{details.time_management}}</td>
+                    <td>{{details.comment_time_management}}</td>
+                </tr>
+                <tr>
+                    <td>Loyalty</td>
+                    <td>{{details.loyalty}}</td>
+                    <td>{{details.comment_loyalty}}</td>
+                </tr>
+                <tr>
+                    <td>Other Competence</td>
+                    <td>{{competence.other_competence}}</td>
+                    <td>{{details.comment_other_competence}}</td>
+                </tr>                                        
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>APPRAISEE COMMENT</legend>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td>Describe how effectively you have been utilized by the University.</td>
+                    <td>{{details.appraiseecomment.effectiveness}}</td>
+                </tr>
+                <tr>
+                    <td>How would you like management to assist you in improving your performance?</td>
+                    <td>{{details.appraiseecomment.assistance}}</td>
+                </tr>
+                <tr>
+                    <td>What are your aspirations as far as career development is concerned?</td>
+                    <td>{{details.appraiseecomment.aspiration}}</td>
+                </tr>
+                <tr>
+                    <td>Any other comment?</td>
+                    <td>{{details.appraiseecomment.any_comment}}</td>
+                </tr>
+                <tr>
+                    <td>Comment Date</td>
+                    <td>{{details.appraiseecomment.comment_date}}</td>
+                </tr>                
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>APPRAISER COMMENT</legend>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td>Comments of the & Justification for the comments</td>
+                    <td>{{details.appraiseecomment.appraisercomment.comment_justification}}</td>
+                </tr>
+                <tr>
+                    <td>Comment Date</td>
+                    <td>{{details.appraiseecomment.appraisercomment.current_date}}</td>
+                </tr>                
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+
+    <div class="card-footer">
+        <a class="btn btn-info float-center" href= "{% url 'staff:comv' view.kwargs.pk %}">Make Your Comment</a>
+    </div>
+    {% comment %} {{ form }} {% endcomment %}
+</div>
+{% comment %} <form method="post" action="">
+{% csrf_token %}
+    {{ form }}
+</form> {% endcomment %}
+
+{% endblock content %}

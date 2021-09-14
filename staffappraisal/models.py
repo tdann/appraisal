@@ -160,7 +160,7 @@ class Competence(models.Model):
         blank=True,null=True
     )
     comment_client_care=models.TextField(max_length=400,blank=True,null=True)
-    communication = models.PositiveIntegerField(verbose_name="Communication skills", help_text="This is a sample help text",
+    communication = models.PositiveIntegerField(verbose_name="Communication skills",
         validators=[MinValueValidator(decimal.Decimal(1)), MaxValueValidator(decimal.Decimal(5))],
         blank=True,null=True
     )
@@ -180,13 +180,57 @@ class Competence(models.Model):
         blank=True,null=True
     )
     comment_loyalty=models.TextField(max_length=400,blank=True,null=True)
-    other_competence = models.TextField(max_length=500,verbose_name="Other Competences (specify)",blank=True, null=True)
+    other_competence = models.PositiveIntegerField(
+        validators=[MinValueValidator(decimal.Decimal(1)), MaxValueValidator(decimal.Decimal(5))],
+        blank=True,null=True,verbose_name="Other Competences (specify in the Comment)"
+    )
     comment_other_competence = models.TextField(max_length=500,blank=True, null=True)
-
     submitted_on = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return self.user.get_full_name()
+
+    @property
+    def overallp(self):
+        ps= int(self.profession_skill) if self.profession_skill else 0
+        pl =int(self.planning) if self.planning else 0
+        le =int(self.leadership) if self.leadership else 0
+        dm =int(self.decision_making) if self.decision_making else 0
+        inn =int(self.innovation) if self.innovation else 0
+        tw =int(self.team_work) if self.team_work else 0
+        hr =int(self.human_resource) if self.human_resource else 0
+        fm =int(self.fin_management) if self.fin_management else 0
+        orm =int(self.o_resource_man) if self.o_resource_man else 0
+        ro =int(self.result_orientation) if self.result_orientation else 0
+        cc =int(self.client_care) if self.team_work else 0
+        co =int(self.communication) if self.team_work else 0
+        inte =int(self.integrity) if self.team_work else 0
+        tm =int(self.time_management) if self.team_work else 0
+        loy =int(self.loyalty) if self.team_work else 0
+        coc =int(self.comment_other_competence) if self.team_work else 0
+        totalall = ps+pl+le+dm+inn+tw+hr+fm+orm+ro+cc+co+inte+tm+loy+coc
+
+        num1 = 1 if self.professional_skill else 0
+        num2 = 1 if self.planning else 0
+        num3 = 1 if self.leadership else 0
+        num4 = 1 if self.decision_making else 0
+        num5 = 1 if self.innovation else 0
+        num6 = 1 if self.team_work else 0
+        num7 = 1 if self.human_resource else 0
+        num8 = 1 if self.fin_management else 0
+        num9 = 1 if self.o_resource_man else 0
+        num10 = 1 if self.result_orientation else 0
+        num11 = 1 if self.client_care else 0
+        num12 = 1 if self.communication else 0
+        num13 = 1 if self.integrity else 0
+        num14 = 1 if self.time_management else 0
+        num15 = 1 if self.loyalty else 0
+        num16 = 1 if self.comment_other_competence else 0
+
+        totalnum = num1+num2+num3+num4+num5+num6+num7+num8+num9+num10+num11+num11+num12+num13+num14+num15+num16
+        return int(totalall/totalnum)
+
+        
 
 class AppraiserAndAppraiseeAgreement(models.Model):
     competence = models.ForeignKey(Competence, on_delete=models.CASCADE, blank=True, null=True)
@@ -200,7 +244,7 @@ class AppraiserAndAppraiseeAgreement(models.Model):
         validators=[MinValueValidator(decimal.Decimal(1)), MaxValueValidator(decimal.Decimal(5))]
     )
     # super_visor = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Supervisor inspecting this.")
-    super_visor = models.ForeignKey(User,on_delete=models.CASCADE, verbose_name="Supervisor inspecting this.")
+    super_visor = models.ForeignKey(User,on_delete=models.CASCADE, verbose_name="Supervisor inspecting this.",  blank=True, null=True)
     comments_on_performance = models.CharField(max_length=100,  blank=True, null=True)
 
     def __str__(self) -> str:
@@ -259,7 +303,7 @@ class AppraiserComment(models.Model):
 
 
 class VcComment(models.Model):
-    appraisee_comment = models.ForeignKey(Competence, on_delete=models.CASCADE)
+    appraiser_comment = models.OneToOneField(Competence, on_delete=models.CASCADE)
     vc_comment = models.TextField(verbose_name="COMMENTS OF THE VICE CHANCELLOR /DEPUTY VICE CHANCELLOR (AA) /DEPUTY VICE CHANCELLOR (F&A)**",max_length=500)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     commentdate = models.DateField(auto_now=True)

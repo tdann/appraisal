@@ -14,7 +14,10 @@ from .models import (
 
 class AppraiserAndAppraiseeAgreementAdmin(admin.ModelAdmin):
     list_display=['competence', 'key_outputs', 'self_rating', 'supervisor_rating', 'agreed_rating']
-    list_filter=['self_rating', 'supervisor_rating']
+#     list_filter=['self_rating', 'supervisor_rating']
+# class CompetenceAdmin(admin.ModelAdmin):
+#     list_display=['profession_skill', 'overallp']
+    # list_filter=['profession_skill','planning']
 
 # Register your models here.
 admin.site.register(Faculty)

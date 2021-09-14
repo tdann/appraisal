@@ -156,42 +156,6 @@ class CommentView(CreateView):
         form.instance.competence=compentence
         return super().form_valid(form)
 
-class CommentappView(CreateView):
-    model = AppraiserComment
-    form_class = AppraiserForm
-    template_name = 'supervisor/commentsuper.html'
-    success_url='/success'
-    
-    def form_valid(self, form):
-        comm1 = AppraiseeComment.objects.get(competence__id = self.kwargs['pk'])
-        form.instance.appraisee_comment=comm1
-       
-        try:
-             form.instance.super_visor=self.request.user
-             return super().form_valid(form)
-    # code that produces error
-        except IntegrityError as e:
-            # return render("auth/register.html", {"message": e.message})
-            return HttpResponse("ERROR: Comment already exists!")
-            
-
-    # def get_queryset(self):
-    #     queryset =super().get_queryset()
-    #     queryset = AppraiseeComment.objects.get(competence__pk=self.kwargs['pk'])
-    #     return queryset
-        
-    # def get_success_url(self):
-    #     appee = self.object.appraisee_comment.pk
-    #     return reverse_lazy("staff:coma", kwargs = {'pk':appee})
-
-class CommentvcView(CreateView):
-    model = VcComment
-    form_class = CommentvcForm
-    template_name = 'vc/commentvc.html'
-    def form_valid(self, form):
-        form.instance.user=self.request.user
-        return super().form_valid(form)
-
 class ProfileView(CreateView):
     model = Profile
     form_class = ProfileForm
@@ -264,6 +228,24 @@ class AllDetailViewapp(DetailView):
     context_object_name="details"
     template_name = "supervisor/detail.html"
 
+class CommentappView(CreateView):
+    model = AppraiserComment
+    form_class = AppraiserForm
+    template_name = 'supervisor/commentsuper.html'
+    success_url='/success'
+    
+    def form_valid(self, form):
+        comm1 = AppraiseeComment.objects.get(competence__id = self.kwargs['pk'])
+        form.instance.appraisee_comment=comm1
+       
+        try:
+             form.instance.super_visor=self.request.user
+             return super().form_valid(form)
+    # code that produces error
+        except IntegrityError as e:
+            # return render("auth/register.html", {"message": e.message})
+            return HttpResponse("ERROR: Comment already exists!")
+
 class AgreementView(CreateView):
     model = AppraiserAndAppraiseeAgreement
     form_class = AssessmentFormSuper
@@ -298,3 +280,39 @@ class UpdateOutputall(UpdateView):
     def get_success_url(self):
         comp_id = self.object.competence.pk
         return reverse_lazy("staff:agreement", kwargs = {'pk':comp_id})
+
+class ListCompetenceVCView(ListView):
+    model = Competence
+    context_object_name = 'competences'
+    template_name='vc/appraiserlist.html'
+    
+    def get_queryset(self):
+        """
+            Return all the competences where signed by the supervisor
+        """
+        queryset = Competence.objects.filter(appraiseecomment__appraisercomment__comment_justification__isnull=False)
+        # queryset = Competence.objects.filter(appraiseecomment__appraisercomment__comment_justification__isnull=False, appraiseecomment__appraisercomment__vccomment__vc_comment__isnull=True)
+        return queryset
+
+class AllDetailViewVC(DetailView):
+    model = Competence
+    # form_class=CompetenceForm
+    context_object_name="details"
+    template_name = "vc/details.html"
+
+class CommentvcView(CreateView):
+    model = VcComment
+    form_class = CommentvcForm
+    template_name = 'vc/commentvc.html'
+    success_url='/success'
+
+    def form_valid(self, form):
+        comvc = Competence.objects.get(id=self.kwargs['pk'])
+        form.instance.appraiser_comment=comvc
+        try:
+             form.instance.user=self.request.user
+             return super().form_valid(form)
+    # code that produces error
+        except IntegrityError as e:
+            # return render("auth/register.html", {"message": e.message})
+            return HttpResponse("ERROR: Comment already exists!")

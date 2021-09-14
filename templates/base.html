@@ -76,17 +76,9 @@
                         {% comment %} <a class='collapse-item' href="{% url 'staff:users'  %}" />Users</a> {% endcomment %}
                         {% if user.profile.roles == 'u' %}
                             <a class='collapse-item' href="{% url 'staff:comp'  %}" />Add Competence</a>
-                            {% comment %} <a class='collapse-item' href="{% url 'staff:as'  %}" />Assessment</a> {% endcomment %}
-                            {% comment %} <a class='collapse-item' href="{% url 'staff:comm'  %}" />Appraisee's Comments</a> {% endcomment %}
                         {% endif %}
-
-                        {% comment %} <a class='collapse-item' href="{% url 'staff:users'  %}" />We all see this</a> {% endcomment %}
-                        {% comment %} <a class='collapse-item' href="{% url 'staff:both'  %}" />Appraisee and Supervisor</a> {% endcomment %}
                         {% if user.profile.roles == 's' %}
                             <a class='collapse-item' href="{% url 'staff:list'  %}" />Appraisee List</a>
-                            {% comment %} <a class='collapse-item' href="{% url 'staff:act'  %}" />Action Plan</a> {% endcomment %}
-                            {% comment %} <a class='collapse-item' href="{% url 'staff:coma'  %}" />Supervisor's Comments</a> {% endcomment %}
-                            {% comment %} <a class='collapse-item' href="{% url 'staff:as'  %}" />Assessment</a> {% endcomment %}
                         {% endif %}
 
                         {% if user.profile.roles == 'h' %}
@@ -95,33 +87,12 @@
                         {% endif %}
 
                         {% if user.profile.roles == 'v' %}
-                            <a class='collapse-item' href="{% url 'staff:users'  %}" />Appraisee List</a>
-                            <a class='collapse-item' href="{% url 'staff:comv'  %}" />VC's Office Comments</a>
+                            <a class='collapse-item' href="{% url 'staff:listvc'  %}" />Appraisee List</a>
                         {% endif %}
 
                     </div>
                 </div>
             </li>
-
-{% comment %} This code is needed in future dont delete {% endcomment %}
-
-            {% comment %} <li class="nav-item">
-                <a class='text-light text-lg' href="{% url 'staff:users'  %}" />Users</a> <br>
-
-                {% if user.profile.roles == 's' %}
-                <a class='text-light text-lg' href="{% url 'staff:users'  %}" />Am supervisor</a><br>
-                {% endif %}
-
-                {% if user.profile.roles == 'h' %}
-                <a class='text-light text-lg' href="{% url 'staff:users'  %}" />Human resource</a><br>
-                {% endif %}
-
-                {% if user.profile.roles == 'v' %}
-                <a class='text-light text-lg' href="{% url 'staff:users'  %}" />Users</a><br>
-                {% endif %}
-
-                <a class='text-light text-lg' href="{% url 'staff:users'  %}" />We all see this</a>
-            </li> {% endcomment %}
         
             </ul>
         <!-- End of Sidebar -->
